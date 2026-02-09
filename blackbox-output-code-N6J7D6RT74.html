@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">My Custom Website</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #333; }
+        .admin-section { background: #f0f0f0; padding: 10px; margin-bottom: 20px; border: 1px solid #ccc; }
+        .gallery { display: flex; flex-wrap: wrap; gap: 10px; }
+        .photo { border: 1px solid #ddd; padding: 5px; }
+        .photo img { max-width: 200px; max-height: 200px; }
+        .links { list-style: none; padding: 0; }
+        .links li { margin: 5px 0; }
+    </style>
+</head>
+<body>
+    <h1 id="mainHeading">My Custom Website</h1>
+    
+    <!-- Admin Section: Only you should access this (in a real site, add login) -->
+    <div class="admin-section">
+        <h2>Admin Controls (Only for You)</h2>
+        
+        <!-- Edit Page Name -->
+        <label for="titleInput">Change Page Name:</label>
+        <input type="text" id="titleInput" placeholder="Enter new page name">
+        <button onclick="changeTitle()">Update Title</button>
+        
+        <!-- Add Photos -->
+        <br><br>
+        <label for="photoInput">Upload Photo:</label>
+        <input type="file" id="photoInput" accept="image/*">
+        <button onclick="addPhoto()">Add Photo</button>
+        
+        <!-- Add Links -->
+        <br><br>
+        <label for="linkText">Link Text:</label>
+        <input type="text" id="linkText" placeholder="e.g., Google">
+        <label for="linkUrl">Link URL:</label>
+        <input type="url" id="linkUrl" placeholder="e.g., https://google.com">
+        <button onclick="addLink()">Add Link</button>
+    </div>
+    
+    <!-- Public Gallery -->
+    <h2>Photo Gallery</h2>
+    <div id="gallery" class="gallery"></div>
+    
+    <!-- Public Links -->
+    <h2>Useful Links</h2>
+    <ul id="links" class="links"></ul>
+    
+    <script>
+        // Function to change the page title and heading
+        function changeTitle() {
+            const newTitle = document.getElementById('titleInput').value;
+            if (newTitle) {
+                document.getElementById('pageTitle').textContent = newTitle;
+                document.getElementById('mainHeading').textContent = newTitle;
+                document.getElementById('titleInput').value = ''; // Clear input
+            }
+        }
+        
+        // Function to add a photo
+        function addPhoto() {
+            const fileInput = document.getElementById('photoInput');
+            const file = fileInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgSrc = e.target.result;
+                    const gallery = document.getElementById('gallery');
+                    const photoDiv = document.createElement('div');
+                    photoDiv.className = 'photo';
+                    photoDiv.innerHTML = `
+                        <img src="${imgSrc}" alt="Uploaded Photo">
+                        <br>
+                        <a href="${imgSrc}" download="${file.name}">Download</a>
+                    `;
+                    gallery.appendChild(photoDiv);
+                };
+                reader.readAsDataURL(file);
+                fileInput.value = ''; // Clear input
+            }
+        }
+        
+        // Function to add a link
+        function addLink() {
+            const text = document.getElementById('linkText').value;
+            const url = document.getElementById('linkUrl').value;
+            if (text && url) {
+                const linksList = document.getElementById('links');
+                const li = document.createElement('li');
+                li.innerHTML = `<a href="${url}" target="_blank">${text}</a>`;
+                linksList.appendChild(li);
+                document.getElementById('linkText').value = '';
+                document.getElementById('linkUrl').value = '';
+            }
+        }
+    </script>
+</body>
+</html>
