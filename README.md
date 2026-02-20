@@ -1,2 +1,4 @@
 # BLUE-STREAM-STORIES
 ANIME GHIBLI
+
+Inspired By Ghibli
